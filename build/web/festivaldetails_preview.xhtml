@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:panelGrid columns="1">
+        
+        <p:commandButton value="Nazad" action="#{importJSONBean.nazad}" update=":contentForm"/>
+        <p:commandButton value="Sacuvaj" action="#{importJSONBean.dalje}" update=":contentForm"/>
+        
+        <h:panelGrid columns="2">
+            <h:panelGrid columns="1" cellpadding="15">
+                <h:outputText value="Naziv: #{importJSONBean.fest.ime}"/>
+                <p:rating value="#{importJSONBean.rating}" readonly="true" stars="10"/>
+                <h:outputText value="Od: #{importJSONBean.fest.od}" />
+                <h:outputText value="Do: #{importJSONBean.fest.do_}" />
+            </h:panelGrid>
+            
+            <h:panelGrid columns="1">
+                <h:outputText value="Cena: #{importJSONBean.fest.cenaPaket} RSD" />
+                <p:commandButton value="Rezervisi!" action="#"/>
+            </h:panelGrid>
+            
+            <h:outputText value="#{importJSONBean.fest.opis}"/>
+            
+        </h:panelGrid>
+        
+        <h:panelGrid columns="2">
+            <h:panelGrid columns="1">
+                <p:galleria value="#{importJSONBean.slike}" var="slika"  panelWidth="462" panelHeight="283"  showCaption="false">
+                    <p:graphicImage value="#{mediaService.image}">
+                        <f:param name="filename" value="#{slika.path}" />
+                    </p:graphicImage>
+                </p:galleria>
+
+                <p:carousel var="video" value="#{importJSONBean.video}" numVisible="1" style="width:462px;height:283px">
+                    <p:media value="#{video.path}" player="flash" style="height: 240px; width: 100%">
+                        <f:param name="autoPlay" value="0"/>
+                    </p:media>
+                </p:carousel>
+            </h:panelGrid>
+            <h:panelGrid columns="1">
+                <p:carousel value="#{importJSONBean.satnica}" headerText="Satnica" var="dan" itemStyle="height:200px;text-align:center" numVisible="1" easing="easeOutBounce" style="width:250px" circular="true">
+                    <h:panelGrid columns="2" style="width:100%" columnClasses="label,value" cellspacing="5">
+                        <p:repeat value="#{dan.nastupi}" var="nastup" offset="0" size="#{dan.nastupi.size()}" varStatus="#{null}" step="1">
+                            <h:outputText value="#{nastup.od} - #{nastup.do_}" />
+                            <h:outputText value="#{nastup.izvodjac}" />
+                        </p:repeat>
+                    </h:panelGrid>
+                </p:carousel> 
+            </h:panelGrid>
+           
+        </h:panelGrid>
+        <h:panelGrid columns="4" cellpadding="5">
+            <h:outputLink value="#{importJSONBean.fest.facebook}">Facebook</h:outputLink>
+            <h:outputLink value="#{importJSONBean.fest.youtube}">Youtube</h:outputLink>
+            <h:outputLink value="#{importJSONBean.fest.twitter}">Twitter</h:outputLink>
+            <h:outputLink value="#{importJSONBean.fest.instagram}">Instagram</h:outputLink>
+        </h:panelGrid>
+    </h:panelGrid>
+    
+</ui:composition>

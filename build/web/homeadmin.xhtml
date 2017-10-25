@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:form>
+        <h:panelGrid columns="1" cellpadding="20">
+            <p:dataGrid var="fest" value="#{adminHomeBean.mostViewed}" columns="5" rows="1" paginator="false" id="mostviewed">
+                <f:facet name="header">
+                    <h:outputText value="Najvise pregledani festivali:" />
+                </f:facet>
+
+                <p:panel header="#{fest.ime}" style="text-align: center; width: 100%">
+                    <h:panelGrid columns="1" style="width:100%">
+                        <p:graphicImage name="#{fest.slika}" style="width: 100%"/>
+
+                        <h:outputText  value="Pocinje: #{fest.od}"/>
+                        <p:commandLink value="Vise detalja" action="#" update=":contentForm"/>
+
+                    </h:panelGrid>
+                </p:panel>
+
+            </p:dataGrid>
+
+            <p:dataGrid var="fest" value="#{adminHomeBean.mostBought}" columns="5" rows="1" paginator="false" id="mostbought">
+                <f:facet name="header">
+                    <h:outputText value="Najvise karata kupljeno za festivale:" />
+                </f:facet>
+
+                <p:panel header="#{fest.ime}" style="text-align: center; width: 100%">
+                    <h:panelGrid columns="1" style="width:100%">
+                        <p:graphicImage name="#{fest.slika}" style="width: 100%"/>
+
+                        <h:outputText  value="Pocinje: #{fest.od}"/>
+                        <p:commandLink value="Vise detalja" action="#" update=":contentForm"/>
+
+                    </h:panelGrid>
+                </p:panel>
+
+            </p:dataGrid>
+            
+            <p:commandButton value="Odobri dodate slike" action="#{adminHomeBean.odobri}" update=":contentForm" />
+        </h:panelGrid>
+
+    </h:form>
+</ui:composition>

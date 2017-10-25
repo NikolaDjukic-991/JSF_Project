@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    
+    <h:form>
+        <p:fieldset legend="Promena sifre">
+            <h:panelGrid columns="2" cellspacing="5">
+                <h:outputText value="Stara lozinka:" />
+                <p:password value="#{changePassBean.oldPass}" required="true" requiredMessage="Morate uneti staru lozinku."/>
+                <p:outputLabel value="Nova lozinka:"/>
+                <p:password id="pwd1" value="#{changePassBean.newPass}" required="true" requiredMessage="Morate uneti lozinku." feedback="true" match="pwd2" promptLabel="Unesite lozinku" weakLabel="Slaba sifra" goodLabel="Dobra sifra" strongLabel="Jaka sifra" />
+                <p:outputLabel value="Potvrda lozinke:" />
+                <p:password id="pwd2" value="#{changePassBean.newPass}" required="true" requiredMessage="Morate uneti potvrdu lozinke." feedback="false"/>
+                <p:commandButton value="Promeni" action="#{changePassBean.changePass}" update=":contentForm" />
+                <p:commandButton value="Nazad" action="#{navBean.back()}" update=":contentForm" process="@this" />
+            </h:panelGrid>
+        </p:fieldset>
+    </h:form>
+</ui:composition>

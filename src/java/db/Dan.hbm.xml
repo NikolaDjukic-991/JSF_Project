@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2017 3:47:36 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="db.Dan" table="dan" catalog="projekat_pia" optimistic-lock="version">
+        <composite-id name="id" class="db.DanId">
+            <key-property name="idFest" type="int">
+                <column name="idFest" />
+            </key-property>
+            <key-property name="idDan" type="int">
+                <column name="idDan" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="festival" class="db.Festival" update="false" insert="false" fetch="select">
+            <column name="idFest" not-null="true" />
+        </many-to-one>
+        <property name="brKarata" type="int">
+            <column name="BrKarata" not-null="true" />
+        </property>
+        <property name="brProdatihKarata" type="int">
+            <column name="BrProdatihKarata" not-null="true" />
+        </property>
+        <property name="brRezervisanihKarata" type="int">
+            <column name="BrRezervisanihKarata" not-null="true" />
+        </property>
+        <set name="nastupas" table="nastupa" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idFest" not-null="true" />
+                <column name="idDan" not-null="true" />
+            </key>
+            <one-to-many class="db.Nastupa" />
+        </set>
+        <set name="rezervacijas" table="rezervacija" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idFest" not-null="true" />
+                <column name="idDan" not-null="true" />
+            </key>
+            <one-to-many class="db.Rezervacija" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:form id="importfestivalform">
+        <p:fieldset class="poljaokvir" legend="Importuj JSON fajl" rendered="#{importJSONBean.korak == 0}">
+            <h:panelGrid columns="2" cellpadding="5">
+                <p:outputLabel value="Dodajte JSON fajl: " />
+                <p:fileUpload fileUploadListener="#{importJSONBean.upload}" mode="advanced" dragDropSupport="false"
+                      multiple="false" update=":contentForm" sizeLimit="100000" fileLimit="11" allowTypes="/(\.|\/)(json)$/" />
+            </h:panelGrid>
+
+        </p:fieldset>
+        
+        <p:fieldset class="poljaokvir" legend="Dodaj slike i video" rendered="#{importJSONBean.korak == 1}">
+            <h:panelGrid columns="2">
+                <p:fieldset legend="Slike">
+                    <h:panelGrid columns="1">
+                        <p:outputLabel value="Dodajte slike festivala"/>
+
+                        <p:galleria value="#{importJSONBean.slike}" var="slika" panelWidth="500" panelHeight="313" showCaption="true">
+                            <p:graphicImage title="Slike festivala" value="#{mediaService.image}">
+                                <f:param name="filename" value="#{slika.path}" />
+                            </p:graphicImage>
+                        </p:galleria>
+
+                        <p:fileUpload fileUploadListener="#{importJSONBean.uploadSlike}" mode="advanced" dragDropSupport="false"
+                              multiple="true" update=":contentForm" sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:fieldset legend="Video">
+                    <h:panelGrid columns="1">
+                        <p:outputLabel value="Dodajte linkove ka youtube snimcima festivala"/>
+                        <p:inputText value="#{importJSONBean.videoUrl}" />
+                        <p:commandButton value="Dodaj video"  action="#{importJSONBean.uploadVideo}" update=":contentForm"/>
+
+                        <p:fieldset legend="Uploadovani snimci">
+                            <p:carousel var="video" value="#{importJSONBean.video}" numVisible="1" style="width:462px;height:283px">
+                                <p:media value="#{video.path}" player="flash" style="height: 240px; width: 100%">
+                                    <f:param name="autoPlay" value="0"/>
+                                </p:media>
+                            </p:carousel>
+                        </p:fieldset>
+                    </h:panelGrid>
+                </p:fieldset>
+            </h:panelGrid>
+        </p:fieldset>
+        
+        <p:commandButton value="#{importJSONBean.buttonLabel}" action="#{importJSONBean.dalje}" update=":contentForm" disabled="#{!importJSONBean.uploaded}" />
+        <p:commandButton value="Nazad" action="#{importJSONBean.nazad}" update=":contentForm" disabled="#{importJSONBean.korak == 0}" />
+        
+        <p:steps activeIndex="#{importJSONBean.korak}">
+            <p:menuitem value="Importovanje fajla" />
+            <p:menuitem value="Slike i Video" />
+            <p:menuitem value="Pregled" />
+        </p:steps>
+
+        
+        
+        
+        
+    </h:form>
+</ui:composition>

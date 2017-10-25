@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    
+    <p:fieldset legend="Otkazivanje festivala">
+        <h:panelGrid columns="1">
+            <h:panelGrid columns="2" cellspacing="5">
+                <h:outputText value="Naziv festivala:"/>
+                <h:inputText value="#{otkaziFestivalBean.ime}">
+                    <p:ajax event="keyup" listener="#{otkaziFestivalBean.filtrirajFestivale}" update=":contentForm" />
+                </h:inputText>
+            </h:panelGrid>
+            <p:dataList value="#{otkaziFestivalBean.festivali}" var="festival" type="unordered" itemType="none" paginator="true" rows="20" styleClass="paginated">
+                <f:facet name="header">
+                    Festivali
+                </f:facet>
+                <p:commandLink update=":contentForm" action="#{otkaziFestivalBean.otkazi(festival)}" title="Otkazi festival" styleClass="ui-icon ui-icon-closethick" style="float:left;margin-right:10px" />
+                <h:outputText value="#{festival.ime}" style="display:inline-block"/>
+            </p:dataList>
+        </h:panelGrid>
+    </p:fieldset>
+    
+</ui:composition>

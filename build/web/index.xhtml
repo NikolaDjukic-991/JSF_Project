@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>PIA Projekat 389/11</title>
+    </h:head>
+    <h:body>
+        
+        <ui:composition template="./template.xhtml">
+
+            <ui:define name="top">
+                <h:form id="topForm">
+                    <h:commandLink action="#{navBean.home()}">
+                        <p:graphicImage name="img/logo.png" width="10%" />
+                    </h:commandLink>
+                
+                    <ui:fragment rendered="#{navBean.topPage == 'korisniktop'}">
+                        <ui:include src="KorisnikTop.xhtml" />
+                    </ui:fragment>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="left">
+                <h:form id="leftForm">
+                    <ui:fragment rendered="#{navBean.leftPage == 'adminleft'}">
+                        <ui:include src="AdminLeft.xhtml" />
+                    </ui:fragment>
+                    <ui:fragment rendered="#{navBean.leftPage == 'genericleft'}">
+                        <ui:include src="KorisnikLeft.xhtml" />
+                    </ui:fragment>
+                </h:form>
+            </ui:define>
+            
+
+
+            <ui:define name="content">
+                <h:form id="contentForm">
+                    <p:growl id="growlmsg" for="notificationbubble" showDetail="true" sticky="true" />
+                    <p:poll interval="20" listener="#{messageBean.showMessages}" update="growlmsg" />
+                    
+                    <ui:fragment rendered="#{navBean.activePage == 'login'}">
+                        <ui:include src="login.xhtml" />
+                    </ui:fragment>
+                    <ui:fragment rendered="#{navBean.activePage == 'register'}">
+                        <ui:include src="register.xhtml" />
+                    </ui:fragment>
+                    <ui:fragment rendered="#{navBean.activePage == 'homekorisnik'}">
+                        <ui:include src="homekorisnik.xhtml" />
+                    </ui:fragment>
+                    <ui:fragment rendered="#{navBean.activePage == 'homeadmin'}">
+                        <ui:include src="homeadmin.xhtml" />
+                    </ui:fragment>
+                    
+                    <ui:fragment rendered="#{navBean.activePage == 'dodajfestival'}">
+                        <ui:include src="DodajFestival.xhtml" />
+                    </ui:fragment>
+
+                    
+                    <ui:fragment rendered="#{navBean.activePage == 'odobrikorisnika'}">
+                        <ui:include src="odobrikorisnika.xhtml" />
+                    </ui:fragment>
+                    
+                    <ui:fragment rendered="#{navBean.activePage == 'recentlogins'}">
+                        <ui:include src="recentlogins.xhtml" />
+                    </ui:fragment>
+                    <ui:fragment rendered="#{navBean.activePage == 'importfestival'}">
+                        <ui:include src="import.xhtml" />
+                    </ui:fragment>
+                    <ui:fragment rendered="#{navBean.activePage == 'odobriprodaju'}">
+                        <ui:include src="odobriprodaju.xhtml" />
+                    </ui:fragment>
+                    <ui:fragment rendered="#{navBean.activePage == 'prodajaneregistrovanim'}">
+                        <ui:include src="prodajaneregistrovanim.xhtml" />
+                    </ui:fragment>
+                    <ui:fragment rendered="#{navBean.activePage == 'festivaldetails'}">
+                        <ui:include src="festivaldetails.xhtml" />
+                    </ui:fragment>
+                    <ui:fragment rendered="#{navBean.activePage == 'changepass'}">
+                        <ui:include src="changepass.xhtml" />
+                    </ui:fragment>
+                    <ui:fragment rendered="#{navBean.activePage == 'otkazifestival'}">
+                        <ui:include src="otkazivanjefestivala.xhtml" />
+                    </ui:fragment>
+                    <ui:fragment rendered="#{navBean.activePage == 'festivalpreview'}">
+                        <ui:include src="festivaldetails_preview.xhtml" />
+                    </ui:fragment>
+                    
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

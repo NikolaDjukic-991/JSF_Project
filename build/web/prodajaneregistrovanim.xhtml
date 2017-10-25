@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    
+    <h:form id="sellform">
+        <h:panelGrid cellspacing="10" columns="4">
+            <p:outputLabel value="Naziv:"/>
+            <p:inputText value="#{sellBean.naziv}" />
+            <p:outputLabel value="Mesto:" />
+            <p:inputText value="#{sellBean.mesto}" />
+            <p:outputLabel value="Od:" />
+            <p:calendar  id="datumod" value="#{sellBean.datumOd}" mindate="#{searchBean.danasnjiDatum}" >
+                <p:ajax event="dateSelect" listener="#{sellBean.izabranOd}" update="datumod datumdo" />
+            </p:calendar>
+            <p:outputLabel value="Do:" />
+            <p:calendar  id="datumdo" value="#{sellBean.datumDo}" mindate="#{sellBean.datumOdIliDanas}">
+                <p:ajax event="dateSelect" listener="#{sellBean.izabranDo}" update="datumdo datumod" />
+            </p:calendar>
+            <p:commandButton value="Trazi" action="#{sellBean.pretraga()}" update=":contentForm" />
+        </h:panelGrid>
+        <p:dataTable id="pretraga" var="festival" value="#{sellBean.festivali}"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                     paginator="true" rows="10" style="margin-bottom:20px">
+
+            <f:facet name="header">
+                Rezultati pretrage:
+            </f:facet>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Id festivala" />
+                </f:facet>
+                <h:outputText value="#{festival.idFest}" />
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Ime"/>
+                </f:facet>
+                <h:outputText value="#{festival.ime}" />
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Od" />
+                </f:facet>
+                <h:outputText value="#{festival.od}" />
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Do" />
+                </f:facet>
+                <h:outputText value="#{festival.do_}" />
+            </p:column>
+            
+            <p:column>
+                <p:commandLink value="Detalji prodaje..." id="detaljibutton" update=":contentForm" action="#{sellBean.prodajDijalog(festival)}">
+                    <p:ajax event="dialogReturn" listener="#{sellBean.dialogRet}" update=":contentForm"/>
+                </p:commandLink>
+            </p:column>
+        </p:dataTable>
+        
+    </h:form>
+</ui:composition>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    
+    <h:form>
+        <p:dataScroller value="#{odobriKorisnikeBean.korisnici}" var="korisnik" chunkSize="10">
+            <f:facet name="header">
+                Korisnici koji cekaju odobrenje
+            </f:facet>
+
+            <h:panelGrid columns="3" style="width:100%">
+                <p:outputPanel>
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value ="Korisnicko ime:"/>
+                        <p:outputLabel value="#{korisnik.uname}" />
+                        <p:outputLabel value ="Ime:"/>
+                        <p:outputLabel value="#{korisnik.ime}" />
+                        <p:outputLabel value ="Prezime:"/>
+                        <p:outputLabel value="#{korisnik.prezime}" />
+                        
+                    </h:panelGrid>
+                    
+                </p:outputPanel>
+                <p:outputPanel>
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value ="Email:"/>
+                        <p:outputLabel value="#{korisnik.email}" />
+                        <p:outputLabel value ="Telefon:"/>
+                        <p:outputLabel value="#{korisnik.telefon}" />
+                    </h:panelGrid>
+                </p:outputPanel>
+                <p:outputPanel>
+                    <p:commandButton value="Odobri zahtev" actionListener="#{odobriKorisnikeBean.odobri(korisnik)}" update=":contentForm" icon="ui-icon-check" />
+                    <p:commandButton value="Odbij zahtev" actionListener="#{odobriKorisnikeBean.odbij(korisnik)}" update=":contentForm" icon="ui-icon-closethick" />
+                </p:outputPanel>
+            </h:panelGrid>
+        </p:dataScroller>
+    </h:form>
+</ui:composition>

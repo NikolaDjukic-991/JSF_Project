@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:panelGrid columns="1">
+        
+        <p:commandButton value="Nazad" action="#{festivalDetailsBean.back}" update=":contentForm"/>
+        
+        <h:panelGrid columns="2">
+            <h:panelGrid columns="1" cellpadding="15">
+                <h:outputText value="Naziv: #{festivalDetailsBean.fest.ime}"/>
+                <p:rating value="#{festivalDetailsBean.rating}" readonly="true" stars="10"/>
+                <h:outputText value="Od: #{festivalDetailsBean.fest.od}" />
+                <h:outputText value="Do: #{festivalDetailsBean.fest.do_}" />
+            </h:panelGrid>
+            
+            <h:panelGrid columns="1">
+                <h:outputText value="Cena: #{festivalDetailsBean.fest.cenaPaket} RSD" />
+                <p:commandButton value="Rezervisi!" action="#{festivalDetailsBean.rezervisiDijalog()}">
+                    <p:ajax event="dialogReturn" listener="#{festivalDetailsBean.dialogRet}" update=":contentForm"/>
+                </p:commandButton>
+            </h:panelGrid>
+            
+            <h:outputText value="#{festivalDetailsBean.fest.opis}"/>
+            
+        </h:panelGrid>
+        
+        <h:panelGrid columns="2" columnClasses="noclass,satnica">
+            <h:panelGrid columns="1">
+                <p:galleria value="#{festivalDetailsBean.slike}" var="slika"  panelWidth="462" panelHeight="283"  showCaption="false">
+                    <p:graphicImage value="#{mediaService.image}">
+                        <f:param name="filename" value="#{slika.path}" />
+                    </p:graphicImage>
+                </p:galleria>
+
+                <p:carousel var="video" value="#{festivalDetailsBean.video}" numVisible="1" style="width:462px;height:283px">
+                    <p:media value="#{video.path}" player="flash" style="height: 240px; width: 100%">
+                        <f:param name="autoPlay" value="0"/>
+                    </p:media>
+                </p:carousel>
+            </h:panelGrid>
+            <p:carousel value="#{festivalDetailsBean.satnica}" headerText="Satnica" var="dan" itemStyle="height:100%;text-align:center" numVisible="1" easing="easeOutBounce" style="width:250px; min-height: 300px" circular="true">
+                <p:dataList value="#{dan.nastupi}" style="width:100%" var="nastup">
+                    <h:panelGrid columns="2" cellspacing="5">
+                        <h:outputText value="#{nastup.od} - #{nastup.do_}" />
+                        <h:outputText value="#{nastup.izvodjac}" />
+                    </h:panelGrid>
+                </p:dataList>
+            </p:carousel> 
+           
+        </h:panelGrid>
+        <h:panelGrid columns="4" cellpadding="5">
+            <h:outputLink value="#{festivalDetailsBean.fest.facebook}" rendered="!festivalDetailsBean.fest.facebook.equals('')">Facebook</h:outputLink>
+            <h:outputLink value="#{festivalDetailsBean.fest.youtube}" rendered="#{!festivalDetailsBean.fest.youtube.equals('')}">Youtube</h:outputLink>
+            <h:outputLink value="#{festivalDetailsBean.fest.twitter}" rendered="#{!festivalDetailsBean.fest.twitter.equals('')}">Twitter</h:outputLink>
+            <h:outputLink value="#{festivalDetailsBean.fest.instagram}" rendered="#{!festivalDetailsBean.fest.instagram.equals('')}"> Instagram</h:outputLink>
+        </h:panelGrid>
+        
+        <p:fieldset legend="Ostavi komentar" rendered="#{festivalDetailsBean.allowKomentar()}">
+            <h:panelGrid id="post_komentar" columns="2" cellspacing="5">
+                <h:outputText value="Ocena:"/>
+                <p:rating value="#{komentarBean.ocena}" stars="10"/>
+            </h:panelGrid>
+            <h:panelGrid columns="2" cellspacing="5">
+                <h:outputText value="Slika:"/>
+                <p:fileUpload fileUploadListener="#{komentarBean.uploadSlike}" mode="advanced" dragDropSupport="false"
+                          multiple="false" update=":contentForm" sizeLimit="100000" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+            </h:panelGrid>
+            <h:panelGrid columns="2"> 
+                <h:outputText value="Video:"/>
+                <p:inputText value="#{komentarBean.videolink}" />
+            </h:panelGrid>
+            <h:panelGrid columns="1">
+                <p:inputTextarea value="#{komentarBean.sadrzaj}" cols="60" rows="6"/>
+                <p:commandButton value="Postavi" action="#{komentarBean.postavi}" update=":contentForm" />
+            </h:panelGrid>
+        </p:fieldset>
+        <p:fieldset legend="Komentari">
+            <h:panelGrid id="nema_komentara" columns="1" rendered="#{festivalDetailsBean.komentars.size() == 0}" >
+                <h:outputText value="Ne postoje komentari za ovaj dogadjaj"/>
+            </h:panelGrid>
+            
+            <h:panelGrid id="komentar_rating" columns="1" rendered="#{festivalDetailsBean.komentars.size() != 0}">
+                <p:repeat value="#{festivalDetailsBean.komentars}" var="komentar" offset="0" size="#{festivalDetailsBean.komentars.size()}" step="1" varStatus="#{null}">
+                    <p:outputPanel>
+                        <h:panelGrid columns="1">
+                            <h:panelGrid columns="4" cellpadding="5">
+                                <h:outputText value="#{komentar.korisnik.uname}:" />
+                                <h:outputText value="#{komentar.datum}"/>
+                                <h:outputText value="#{komentar.festival.ime}" />
+                                <p:rating value="#{komentar.ocena}" rendered="#{komentar.ocena != null}" readonly="true" stars="10"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <h:outputText value="#{komentar.txt}" />
+                            </h:panelGrid>
+                        </h:panelGrid>
+                    </p:outputPanel>
+                    <hr />
+                    <br/>
+                </p:repeat>
+            </h:panelGrid>
+        </p:fieldset>
+        
+    </h:panelGrid>
+    
+</ui:composition>

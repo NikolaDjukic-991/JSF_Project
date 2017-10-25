@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2017 3:47:36 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="db.Izvodjac" table="izvodjac" catalog="projekat_pia" optimistic-lock="version">
+        <id name="idIzvodjac" type="java.lang.Integer">
+            <column name="idIzvodjac" />
+            <generator class="identity" />
+        </id>
+        <property name="ime" type="string">
+            <column name="ime" length="45" not-null="true" />
+        </property>
+        <set name="nastupas" table="nastupa" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idIzvodjac" not-null="true" />
+            </key>
+            <one-to-many class="db.Nastupa" />
+        </set>
+    </class>
+</hibernate-mapping>

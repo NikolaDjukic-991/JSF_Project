@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    
+    <p:menu>
+        <p:submenu label="Festivali">
+            <p:menuitem value="Dodaj festival" actionListener="#{navBean.showAddFestival}" update=":contentForm"/>
+            <p:menuitem value="Importuj festival" actionListener="#{navBean.showImportFestival}" update=":contentForm"/>
+            <p:menuitem value="Izmeni festival" actionListener="#{navBean.showIzmeniFestival}" update=":contentForm"/>
+            <p:menuitem value="Otkazi festival" actionListener="#{navBean.showOtkaziFestival}" update=":contentForm"/>
+        </p:submenu>
+        <p:submenu label="Prodaja">
+            <p:menuitem value="Rezervacije" actionListener="#{navBean.showOdobriProdaju}" update=":contentForm"/>
+            <p:menuitem value="Prodaja neregistrovanim" actionListener="#{navBean.showProdajaNeregistrovanim}" update=":contentForm"/>
+        </p:submenu>
+        <p:submenu label="Korisnici">
+            <p:menuitem value="Odobri korisnika" actionListener="#{navBean.showOdobriKorisnika}" update=":contentForm"/>
+            <p:menuitem value="10 najskorijih logovanja" actionListener="#{navBean.showRecentLogins}" update=":contentForm"/>
+        </p:submenu>
+    </p:menu>
+    <p:commandLink value="Odjavi se" action="#{loginBean.logout}" update=":contentForm :leftForm" immediate="true" />
+    
+</ui:composition>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+     
+    <h:head>
+        <title>Kupovina za neregistrovane korisnike</title>
+        <style type="text/css">
+            .ui-widget {
+                font-size: 90%;
+            }
+        </style>
+    </h:head>
+     
+    <h:body>
+        <h:form id="kupiform">
+            <h:panelGrid columns="1">
+                <p:selectOneRadio value="#{kupiBean.tiprez}">
+                    <f:selectItem itemLabel="Paket" itemValue="paket"/>
+                    <f:selectItem itemLabel="Jedan dan" itemValue="dan"/>
+                    <p:ajax event="click" update="kupiform" />
+                </p:selectOneRadio>
+                
+                <h:panelGrid columns="2" rendered="#{kupiBean.tiprez.equals('paket')}" cellspacing="5">
+                    <h:outputText value="Broj karata: " />
+                    <p:spinner value="#{kupiBean.brKarata}" min="1" max="#{kupiBean.fest.brKarataPoKorisniku}">
+                        <p:ajax event="change" listener="#{kupiBean.brKarataChange}" update="kupiform" />
+                    </p:spinner>
+                    <h:outputText value="Cena:"/>
+                    <h:outputText value="#{kupiBean.cena}" />
+                    <p:commandButton value="Kupi!" action="#{kupiBean.kupi}" update="kupiform"/>
+                </h:panelGrid>
+                
+                <h:panelGrid columns="2" rendered="#{kupiBean.tiprez.equals('dan')}">
+                    <h:outputText value="Dan: "/>
+                    <p:selectOneMenu value="#{kupiBean.izabranDan}" >
+                        <f:selectItems value="#{kupiBean.dans}" var="dan" itemLabel="#{dan.id.idDan+1}" itemValue="#{dan.id.idDan}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Broj karata: "/>
+                    <p:spinner value="#{kupiBean.brKarata}">
+                        <p:ajax event="change" listener="#{kupiBean.brKarataChange}" update="kupiform" />
+                    </p:spinner>
+                    <h:outputText value="Cena:"/>
+                    <h:outputText value="#{kupiBean.cena}" />
+                    <p:commandButton value="Kupi!" action="#{kupiBean.kupi}" update="kupiform"/>
+                </h:panelGrid>
+                
+            </h:panelGrid>
+        </h:form>
+    </h:body>
+     
+</html>

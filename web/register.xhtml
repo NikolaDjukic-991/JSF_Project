@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form>
+        <p:messages id="regvalidation" />
+            <h:panelGrid columns="2" cellpadding="5">
+        
+        
+                <p:outputLabel value="Korisnicko ime: " />
+                <p:inputText value="#{registerBean.uname}" required="true" requiredMessage="Morate uneti korisnicko ime"/>
+                <p:outputLabel value="Lozinka:"/>
+                <p:password id="pwd1" value="#{registerBean.lozinka}" required="true" requiredMessage="Morate uneti lozinku" feedback="true" match="pwd2" promptLabel="Unesite lozinku" weakLabel="Slaba sifra" goodLabel="Dobra sifra" strongLabel="Jaka sifra" />
+                <p:outputLabel value="Potvrda lozinke:" />
+                <p:password id="pwd2" value="#{registerBean.lozinka}" required="true" requiredMessage="Morate uneti potvrdu lozinke" feedback="false"/>
+                <p:outputLabel value="Ime:"/>
+                <p:inputText value="#{registerBean.ime}" required="true"/>
+                <p:outputLabel value="Prezime:"/>
+                <p:inputText value="#{registerBean.prezime}" required="true"/>
+                <p:outputLabel value="Email:"/>
+                <p:inputText value="#{registerBean.email}" />
+                <p:outputLabel value="Telefon:"/>
+                <p:inputText value="#{registerBean.telefon}" required="true" />
+            
+                <p:commandButton value="Registruj se" update=":contentForm" action="#{registerBean.registerUser}" process="@form" validateClient="true" />
+            
+                <p:commandButton process="@this" value="Back" update=":contentForm" action="#{navBean.back}"/>
+            </h:panelGrid>
+    </h:form>
+</ui:composition>
+

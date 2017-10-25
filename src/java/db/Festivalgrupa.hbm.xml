@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2017 3:47:36 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="db.Festivalgrupa" table="festivalgrupa" catalog="projekat_pia" optimistic-lock="version">
+        <id name="idgrupe" type="java.lang.Integer">
+            <column name="idgrupe" />
+            <generator class="identity" />
+        </id>
+        <property name="opis" type="string">
+            <column name="Opis" length="128" not-null="true" />
+        </property>
+        <set name="festivals" table="festival" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idgrupe" not-null="true" />
+            </key>
+            <one-to-many class="db.Festival" />
+        </set>
+    </class>
+</hibernate-mapping>

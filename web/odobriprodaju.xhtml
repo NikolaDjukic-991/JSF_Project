@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    
+    <h:form id="reservationform">
+        <h:panelGrid columns ="2" cellspacing="5">
+            <h:outputText value="Ime korisnika:" />
+            <p:inputText value="#{realiseReservationBean.uname}" />
+            <p:commandButton value="Prikazi rezervacije korisnika" action="#{realiseReservationBean.showReservationsForUser}" update=":contentForm"/> <h:panelGrid/>
+            <h:outputText value="Filtriraj po imenu festivala:" />
+            <p:inputText value="#{realiseReservationBean.imefestivala}">
+                <p:ajax event="keyup" update=":contentForm" listener="#{realiseReservationBean.filtirirajPoFestivalu}" />
+            </p:inputText>
+        </h:panelGrid>
+        
+        <p:dataScroller value="#{realiseReservationBean.rezervacije}" var="rez" chunkSize="10" rendered="#{!realiseReservationBean.uname.isEmpty()}">
+            <f:facet name="header">
+                <h:outputText value="Rezervacije za #{realiseReservationBean.uname}" />
+            </f:facet>
+
+            <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+                <p:outputPanel>
+                    <h:panelGrid columns="3" cellpadding="20">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputText value="Id rezervacije:" />
+                            <h:outputText value="#{rez.idRez}" style="font-weight: bold"/>
+
+                            <h:outputText value="Datum rezervacije:" />
+                            <h:outputText value="#{rez.datum}" style="font-weight: bold"/>
+
+                            <h:outputText value="Ime festivala:" />
+                            <h:outputText value="#{rez.festival.ime}" style="font-weight: bold"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" cellpadding="5">
+
+                            <h:outputText value="Tip rezervacije:"/>
+                            <h:outputText value="#{rez.tip==0?'Jedan dan ('+rez.dan+'. dan)'  :'Paket'}" style="font-weight: bold" />
+
+                            <h:outputText value="Broj karata:"/>
+                            <h:outputText value="#{rez.brkarata}" style="font-weight: bold" />
+
+                            <h:outputText value="Status rezervacije:" />
+                            <h:outputText value="#{rez.status}" />
+                        </h:panelGrid>
+                        
+                        <p:commandButton value="Realizuj rezervaciju" action="#{realiseReservationBean.realizujRezervaciju(rez)}" style="height: 28px" />
+                        
+                    </h:panelGrid>
+                    <hr/>
+                </p:outputPanel>
+            </h:panelGrid>
+        </p:dataScroller>
+        
+    </h:form>
+</ui:composition>

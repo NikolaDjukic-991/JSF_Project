@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2017 3:47:36 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="db.Nastupa" table="nastupa" catalog="projekat_pia" optimistic-lock="version">
+        <composite-id name="id" class="db.NastupaId">
+            <key-property name="idIzvodjac" type="int">
+                <column name="idIzvodjac" />
+            </key-property>
+            <key-property name="idFest" type="int">
+                <column name="idFest" />
+            </key-property>
+            <key-property name="idDan" type="int">
+                <column name="idDan" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="dan" class="db.Dan" update="false" insert="false" fetch="select">
+            <column name="idFest" not-null="true" />
+            <column name="idDan" not-null="true" />
+        </many-to-one>
+        <many-to-one name="izvodjac" class="db.Izvodjac" update="false" insert="false" fetch="select">
+            <column name="idIzvodjac" not-null="true" />
+        </many-to-one>
+        <property name="pocinje" type="time">
+            <column name="pocinje" length="8" not-null="true" />
+        </property>
+        <property name="zavrsava" type="time">
+            <column name="zavrsava" length="8" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

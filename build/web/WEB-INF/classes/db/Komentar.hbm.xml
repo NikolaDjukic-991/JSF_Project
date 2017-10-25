@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2017 3:47:36 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="db.Komentar" table="komentar" catalog="projekat_pia" optimistic-lock="version">
+        <composite-id name="id" class="db.KomentarId">
+            <key-property name="idKomentar" type="int">
+                <column name="idKomentar" />
+            </key-property>
+            <key-property name="idFest" type="int">
+                <column name="idFest" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="festival" class="db.Festival" update="false" insert="false" fetch="select">
+            <column name="idFest" not-null="true" />
+        </many-to-one>
+        <many-to-one name="korisnik" class="db.Korisnik" fetch="select">
+            <column name="Uname" length="45" not-null="true" />
+        </many-to-one>
+        <property name="txt" type="string">
+            <column name="Txt" />
+        </property>
+        <property name="ocena" type="java.lang.Integer">
+            <column name="ocena" />
+        </property>
+        <property name="datum" type="timestamp">
+            <column name="datum" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

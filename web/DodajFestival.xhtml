@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+
+        <p:messages id="addfestivalvalidation" />
+        <p:fieldset class="poljaokvir" legend="Osnovne informacije" rendered="#{addFestivalBean.korak == 0}">
+            <h:panelGrid columns="2" cellpadding="5">
+
+
+                    <p:outputLabel value="Naziv: " />
+                    <p:inputText value="#{addFestivalBean.festival.ime}" required="true" requiredMessage="Morate uneti ime festivala."/>
+                    <p:outputLabel value="Mesto:"/>
+                    <p:inputText value="#{addFestivalBean.festival.mesto}" required="true"/>
+            </h:panelGrid>
+            <h:panelGrid columns="4" cellpadding="5">
+                <p:outputLabel value="Od:" />
+                <p:calendar  id="adddatumod" value="#{addFestivalBean.festival.od}" mindate="#{addFestivalBean.danasnjiDatum}" required="true" requiredMessage="Morate uneti datum pocetka festivala.">
+                    <p:ajax event="dateSelect" listener="#{addFestivalBean.izabranOd}" update="adddatumod adddatumdo kartefield" />
+                </p:calendar>
+                <p:outputLabel value="Do:" />
+                <p:calendar  id="adddatumdo" value="#{addFestivalBean.festival.do_}" mindate="#{addFestivalBean.danasnjiDatum}" required="true" requiredMessage="Morate uneti datum kraja festivala.">
+                    <p:ajax event="dateSelect" listener="#{addFestivalBean.izabranDo}" update="adddatumdo adddatumod kartefield" />
+                </p:calendar>
+            </h:panelGrid>
+        
+        
+            <p:fieldset class="poljaokvir" legend="Grupa festivala">
+                <h:panelGrid columns="2" cellpadding="3">
+                    <p:outputLabel value="Dodaj novu grupu?"/>
+                    <p:inputSwitch value="#{addFestivalBean.dodajNovuGrupu}" onLabel="Da" offLabel="Ne" >
+                        <p:ajax listener="#{addFestivalBean.dodajGrupuPrekidac}" update="updategrid"  />
+                    </p:inputSwitch>
+                </h:panelGrid>
+
+                <h:panelGrid id="updategrid">
+                    <h:panelGrid columns="2" cellpadding="5" rendered="#{addFestivalBean.prikaziPanelZaBiranjeGrupe == true}">
+                        <p:outputLabel value="Grupa festivala:" />
+                        <p:selectOneMenu id="console" value="#{addFestivalBean.idgrupe}" style="width:125px" required="true" requiredMessage="Morate izabrati grupu.">
+                            <f:selectItems value="#{addFestivalBean.svegrupe}" var="grupa" itemValue="#{grupa.idgrupe}" itemLabel="#{grupa.opis.length() &lt; 23 ? grupa.opis : grupa.opis.subSequence(0, 19).toString().concat('...')}" itemDescription="#{grupa.opis}" />
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <h:panelGrid columns="1" cellpadding="5" rendered="#{addFestivalBean.prikaziPanelZaNovuGrupu == true}">
+                        <p:outputLabel value="Unesi opis grupe festivala:"/>
+                        <p:inputTextarea rows="6" cols="33" value="#{addFestivalBean.grupaOpis}" required="true" requiredMessage="Morate uneti opis grupe festivala."/>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </p:fieldset>
+        </p:fieldset>
+        
+        <p:fieldset class="poljaokvir" id="kartefield" legend="Karte" rendered="#{addFestivalBean.korak == 1}">
+            <p:repeat var="dan" value="#{addFestivalBean.dani}" size="#{addFestivalBean.brdana}" varStatus="#{null}" step="1" offset="0">
+                <h:panelGrid columns="2">
+                    <h:outputText value="Karte za #{dan.id.idDan+1}. dan:"/>
+                    <p:spinner value="#{dan.brKarata}" stepFactor="500" min="0" required="true" requiredMessage="Morate uneti broj karata za zadati dan" />
+                </h:panelGrid>
+            </p:repeat>
+            <h:panelGrid columns="2">
+                <h:outputText value="Dozvoljen broj karata po clanu:"/>
+                <p:spinner value="#{addFestivalBean.festival.brKarataPoKorisniku}" stepFactor="1" min="0" required="true" requiredMessage="Morate uneti broj karata po clanu." />
+                <h:outputText value="Dozvoljen broj karata po danu:"/>
+                <p:spinner value="#{addFestivalBean.festival.brKarataPoDanu}" stepFactor="100" min="0" required="true" requiredMessage="Morate uneti broj karata po danu." />
+                <h:outputText value="Cena festivalske karte:"/>
+                <p:spinner value="#{addFestivalBean.festival.cenaPaket}" stepFactor="100" min="0" required="true" requiredMessage="Morate uneti cenu festivalske karte." />
+                <h:outputText value="Cena dnevne karte:" />
+                <p:spinner value="#{addFestivalBean.festival.cenaDan}" stepFactor="100" min="0" required="true" requiredMessage="Morate uneti cenu dnevne karte." />
+            </h:panelGrid>
+        </p:fieldset>
+        
+        <p:fieldset class="poljaokvir" legend="Izvodjaci" rendered="#{addFestivalBean.korak == 2}">
+            <h:panelGrid columns="1">
+                <p:outputLabel value="Izvodjaci:" />
+                <p:autoComplete id="izvodjaci" multiple="false" value="#{addFestivalBean.izabranIzvodjac}" completeMethod="#{addFestivalBean.completeIzvodjaci}"
+                                var="izvodjac" itemLabel="#{izvodjac.ime}" itemValue="#{izvodjac}" converter="izvodjacConverter" forceSelection="false">
+                    <p:column>
+                        <h:outputText value="#{izvodjac.ime}" />
+                    </p:column>
+                </p:autoComplete>
+                <p:outputLabel value="Novi izvodjac:" />
+                <p:inputText id="noviizvodjac" value="#{addFestivalBean.noviIzvodjac}" />
+                <p:commandButton value="Sacuvaj izvodjaca" actionListener="#{addFestivalBean.sacuvajIzvodjaca}" process="noviizvodjac @this" update=":contentForm" />
+            </h:panelGrid>
+            <p:fieldset legend="Vreme nastupa" class="poljaokvir">
+                <h:panelGrid columns="2">
+                    <h:outputText value="Dana:" />
+                    <p:calendar value="#{addFestivalBean.datumNastupa}" mindate="#{addFestivalBean.festival.od}" maxdate="#{addFestivalBean.festival.do_}"/>
+                    <h:outputText value="Pocetak:" />
+                    <p:calendar value="#{addFestivalBean.vremePocetkaNastupa}" pattern="HH:mm" timeOnly="true" />
+                    <h:outputText value="Kraj:" />
+                    <p:calendar value="#{addFestivalBean.vremeKrajaNastupa}" pattern="HH:mm" timeOnly="true" />
+                </h:panelGrid>
+                <p:commandButton value="Sacuvaj" action="#{addFestivalBean.sacuvajVremeNastupa}" update=":contentForm" />
+            </p:fieldset>
+        </p:fieldset>
+        
+        <p:fieldset class="poljaokvir" legend="Opis i socijalne mreze" rendered="#{addFestivalBean.korak == 3}">
+            <h:panelGrid columns="1">
+            <h:outputText value="Napisite nesto o festivalu:" />
+            <p:inputTextarea rows="9" cols="44" value="#{addFestivalBean.festival.opis}" maxlength="5000"/>
+            </h:panelGrid>
+            <h:panelGrid columns="2" cellpadding="5">
+                <h:outputText value="Facebook:"/>
+                <p:inputText value="#{addFestivalBean.festival.facebook}" />
+                <h:outputText value="Twitter:"/>
+                <p:inputText value="#{addFestivalBean.festival.twitter}" />
+                <h:outputText value="Instagram:"/>
+                <p:inputText value="#{addFestivalBean.festival.instagram}" />
+                <h:outputText value="Youtube"/>
+                <p:inputText value="#{addFestivalBean.festival.youtube}" />
+            </h:panelGrid>
+        </p:fieldset>
+        
+        <p:fieldset class="poljaokvir" legend="Slike" rendered="#{addFestivalBean.korak == 4}">
+            <h:panelGrid columns="1">
+                <p:outputLabel value="Dodajte slike festivala"/>
+                
+                <p:galleria value="#{addFestivalBean.slike}" var="slika" panelWidth="500" panelHeight="313" showCaption="false" autoPlay="false">
+                    <p:graphicImage title="Slike festivala" value="#{mediaService.image}">
+                        <f:param name="filename" value="#{slika.path}" />
+                    </p:graphicImage>
+                </p:galleria>
+
+                <p:fileUpload fileUploadListener="#{addFestivalBean.uploadSlike}" mode="advanced" dragDropSupport="false"
+                      multiple="false" update=":contentForm" sizeLimit="100000" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+            </h:panelGrid>
+        </p:fieldset>
+        
+        <p:fieldset class="poljaokvir" legend="Video" rendered="#{addFestivalBean.korak == 5}">
+            <h:panelGrid columns="1">
+                <p:outputLabel value="Dodajte linkove ka youtube snimcima festivala"/>
+                <p:inputText value="#{addFestivalBean.videoUrl}" />
+                <p:commandButton value="Dodaj video"  action="#{addFestivalBean.uploadVideo}" update=":contentForm"/>
+                
+                <p:fieldset legend="Uploadovani snimci">
+                    <h:panelGrid columns="6">
+                        <p:repeat value="#{addFestivalBean.video}" var="video" offset="0" size="1" step="1" varStatus="#{null}">
+                            <p:media value="#{video.path}" player="flash">
+                                <f:param name="autoPlay" value="0"/>
+                            </p:media>
+                        </p:repeat>
+                    </h:panelGrid>
+                </p:fieldset>
+
+                
+            </h:panelGrid>
+        </p:fieldset>
+        
+        <p:commandButton value="#{addFestivalBean.buttonLabel}" action="#{addFestivalBean.dalje}" update=":contentForm" />
+        <p:commandButton value="Nazad" action="#{addFestivalBean.nazad}" update=":contentForm" disabled="#{addFestivalBean.korak == 0}" />
+        
+        <p:steps activeIndex="#{addFestivalBean.korak}">
+            <p:menuitem value="Osnovne informacije" />
+            <p:menuitem value="Broj karata za dane" />
+            <p:menuitem value="Izvodjaci" />
+            <p:menuitem value="Opis i socijalne mreze" />
+            <p:menuitem value="Slike" />
+            <p:menuitem value="Video" />
+        </p:steps>
+        
+
+</ui:composition>

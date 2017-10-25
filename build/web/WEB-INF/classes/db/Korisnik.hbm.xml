@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 16, 2017 3:47:36 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="db.Korisnik" table="korisnik" catalog="projekat_pia" optimistic-lock="version">
+        <id name="uname" type="string">
+            <column name="uname" length="45" />
+            <generator class="assigned" />
+        </id>
+        <property name="lozinka" type="string">
+            <column name="lozinka" length="64" not-null="true" />
+        </property>
+        <property name="ime" type="string">
+            <column name="ime" length="45" not-null="true" />
+        </property>
+        <property name="prezime" type="string">
+            <column name="prezime" length="45" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="254" not-null="true" unique="true" />
+        </property>
+        <property name="telefon" type="string">
+            <column name="telefon" length="45" not-null="true" />
+        </property>
+        <property name="prestupi" type="int">
+            <column name="prestupi" not-null="true" />
+        </property>
+        <property name="tip" type="int">
+            <column name="tip" not-null="true" />
+        </property>
+        <property name="ban" type="int">
+            <column name="ban" not-null="true" />
+        </property>
+        <property name="lastLogin" type="timestamp">
+            <column name="last_login" length="19" not-null="true" />
+        </property>
+        <set name="rezervacijas" table="rezervacija" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Uname" length="45" not-null="true" />
+            </key>
+            <one-to-many class="db.Rezervacija" />
+        </set>
+        <set name="komentars" table="komentar" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Uname" length="45" not-null="true" />
+            </key>
+            <one-to-many class="db.Komentar" />
+        </set>
+        <set name="porukas" table="poruka" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idKorisnik" length="45" not-null="true" />
+            </key>
+            <one-to-many class="db.Poruka" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                >
+    <h:form>
+        <h:panelGrid columns='2' cellspacing="5">
+            <p:outputLabel value="Korisnicko ime:" />
+            <p:inputText id="uname" value="#{loginBean.uname}" />
+            <p:outputLabel value="Lozinka:" />
+            <p:password id="pass" value="#{loginBean.lozinka}"/>
+
+            <p:commandButton value="Loguj se" update=":contentForm :leftForm" action="#{loginBean.login}" />
+            <p:commandButton value="Registracija" update=":contentForm" action="#{navBean.showRegisterPage}" />
+        </h:panelGrid>
+        <p:commandLink value="Nastavi kao neregistrovan korisnik" action="#{navBean.showUserHome}" update=":contentForm :leftForm" />
+        
+    </h:form>
+</ui:composition>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <p:fieldset legend="#{userHomeBean.recentOrTopHeader}">
+        <h:panelGrid columns="5">
+            <p:repeat value="#{userHomeBean.recentOrTop}" offset="0" size="#{userHomeBean.recentOrTop.size()}" varStatus="#{null}" step="1" var="fest">
+                <h:column>
+                    <p:panel header="#{fest.ime}" style="text-align: center; width: 100%">
+                        <h:panelGrid columns="1" style="width:100%">
+                            <p:graphicImage value="#{mediaService.image}" width="180px">
+                                <f:param name="filename" value="#{fest.slika}"/>
+                            </p:graphicImage>
+                            <h:outputText  value="Pocinje: #{fest.od}"/>
+                            <p:commandLink  value="Vise detalja" action="#{festivalDetailsBean.show(fest.idFest)}" update=":contentForm" />
+                        </h:panelGrid>
+                    </p:panel>
+                </h:column>
+            </p:repeat>
+        </h:panelGrid>
+    </p:fieldset>
+        
+
+        
+        <h:panelGrid columns="4" cellspacing="5">
+            <p:outputLabel value="Naziv:"/>
+            <p:inputText value="#{searchBean.naziv}" />
+            <p:outputLabel value="Mesto:" />
+            <p:inputText value="#{searchBean.mesto}" />
+            <p:outputLabel value="Od:" />
+            <p:calendar  id="datumod" value="#{searchBean.datumOd}" mindate="#{searchBean.danasnjiDatum}" >
+                <p:ajax event="dateSelect" listener="#{searchBean.izabranOd}" update="datumod datumdo" />
+            </p:calendar>
+            <p:outputLabel value="Do:" />
+            <p:calendar  id="datumdo" value="#{searchBean.datumDo}" mindate="#{searchBean.datumOdIliDanas}">
+                <p:ajax event="dateSelect" listener="#{searchBean.izabranDo}" update="datumdo datumod" />
+            </p:calendar>
+
+            <p:outputLabel value="Izvodjaci:" />
+            <p:autoComplete id="themes" multiple="true" value="#{searchBean.izabraniIzvodjaci}" completeMethod="#{searchBean.completeIzvodjaci}"
+                            var="izvodjac" itemLabel="#{izvodjac.ime}" itemValue="#{izvodjac}" forceSelection="true" converter="izvodjacConverter" >
+                <p:column>
+                    <h:outputText value="#{izvodjac.ime}" />
+                </p:column>
+            </p:autoComplete>
+   
+        </h:panelGrid>
+        
+        <p:commandButton style="width: 35%; height: 35px; margin: 5px " value="Trazi!" actionListener="#{searchBean.pretraga}" icon="ui-icon-search" update=":contentForm"/>
+        <p:dataGrid var="festival" value="#{searchBean.rezultati}" columns="3" layout="grid"
+            rows="12" paginator="true" id="festivali"
+            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+            rowsPerPageTemplate="6,12,16">
+ 
+            <f:facet name="header">
+                Rezultati pretrage:
+            </f:facet>
+            <p:column>
+                <p:panel header="#{festival.ime}" style="text-align:center">
+                    <h:panelGrid columns="1" style="width:100%">
+                        <p:graphicImage name="#{festival.slika}" style="width: 30%"/> 
+
+                        <h:outputText value="Mesto: #{festival.mesto}" />
+                        <h:outputText value="Od: #{festival.od}" />
+                        <h:outputText value="Do: #{festival.do_}" />
+
+                        <p:commandLink update=":contentForm" value="Vise detalja" action="#{festivalDetailsBean.show(festival.idFest)}" />
+                    </h:panelGrid>
+                </p:panel>
+            </p:column>
+
+        </p:dataGrid>
+        
+    
+</ui:composition>
